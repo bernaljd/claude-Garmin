@@ -1,0 +1,11 @@
+# Login credentials / tokens: never commit
+garmin-ci-token.txt
+garmin_tokens.json
+.garminconnect/
+
+# Your personal data
+garmin/
+
+__pycache__/
+*.pyc
+.venv/
