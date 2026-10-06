@@ -1,0 +1,27 @@
+# Copy to .github/workflows/garmin-sync.yml in your own repo (Path A).
+name: garmin-sync
+
+on:
+  schedule:
+    - cron: "17 10 * * *"   # every morning, UTC
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: pip install -r requirements.txt
+      - name: Sync Garmin -> ingest endpoint
+        env:
+          GARMIN_TOKEN_B64: ${{ secrets.GARMIN_TOKEN_B64 }}
+          GARMIN_INGEST_URL: ${{ secrets.GARMIN_INGEST_URL }}
+          GARMIN_INGEST_SECRET: ${{ secrets.SESSION_LOG_SECRET }}
+        run: python sync_garmin.py --days 3 --sink supabase
