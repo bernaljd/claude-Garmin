@@ -1,0 +1,150 @@
+---
+import Base from '../layouts/Base.astro';
+import Logo from '../components/Logo.astro';
+import Dish from '../components/Dish.astro';
+import WaIcon from '../components/WaIcon.astro';
+import { brand, cop, waLink } from '../config/brand';
+
+const { hero, contact, menu, story, hours } = brand;
+const order = (item: string) => waLink(brand.whatsapp.itemMessage.replace('{item}', item));
+const mapEmbed = `https://www.google.com/maps?q=${encodeURIComponent(contact.mapsQuery)}&output=embed`;
+const nav = [['#menu', 'Menú'], ['#historia', 'Historia'], ['#galeria', 'Galería'], ['#visitanos', 'Visítanos']];
+---
+<Base>
+  <a class="skip" href="#menu">Saltar al menú</a>
+
+  <header class="top">
+    <div class="wrap top-in">
+      <a href="#inicio" class="brand-link" aria-label={`${brand.name}, inicio`}><Logo /></a>
+      <nav aria-label="Principal" class="nav">
+        {nav.map(([href, label]) => <a href={href}>{label}</a>)}
+      </nav>
+      <a class="btn btn-wa btn-sm" href={waLink(brand.whatsapp.greeting)} target="_blank" rel="noopener noreferrer"><WaIcon />WhatsApp</a>
+    </div>
+  </header>
+
+  <main id="inicio">
+    <section class="hero">
+      <div class="wrap hero-in">
+        <div class="hero-copy">
+          <p class="eyebrow">{hero.eyebrow}</p>
+          <h1>{hero.title}</h1>
+          <p class="lead">{hero.text}</p>
+          <div class="cta-row">
+            <a class="btn btn-primary" href="#menu">Ver menú</a>
+            <a class="btn btn-ghost" href={waLink(brand.whatsapp.reserveMessage)} target="_blank" rel="noopener noreferrer"><WaIcon />Reservar por WhatsApp</a>
+          </div>
+          <ul class="chips">{hero.highlights.map((h) => <li>{h}</li>)}</ul>
+        </div>
+        <div class="hero-art" aria-hidden="true">
+          <div class="hero-disc"></div>
+          <Dish art={hero.art} />
+          <span class="stamp">{brand.city}<br />{brand.tagline}</span>
+        </div>
+      </div>
+    </section>
+
+    <section id="menu" class="menu">
+      <div class="wrap">
+        <p class="eyebrow">La carta</p>
+        <h2>Elige lo que se te antoja</h2>
+        <div class="filters" role="group" aria-label="Filtrar el menú por categoría">
+          <button type="button" class="filter" data-filter="all" aria-pressed="true">Todo</button>
+          {menu.categories.map((c) => <button type="button" class="filter" data-filter={c.id} aria-pressed="false">{c.label}</button>)}
+        </div>
+        <ul class="items">
+          {menu.items.map((item) => (
+            <li class="item" data-category={item.category}>
+              <div class="item-art"><Dish art={item.art} image={item.image} label={item.name} />{item.tag && <span class={`tag tag-${item.tag.toLowerCase()}`}>{item.tag}</span>}</div>
+              <div class="item-body">
+                <div class="item-head"><h3>{item.name}</h3><p class="price">{cop(item.price)}</p></div>
+                <p class="desc">{item.description}</p>
+                <a class="order" href={order(item.name)} target="_blank" rel="noopener noreferrer" aria-label={`Pedir ${item.name} por WhatsApp`}><WaIcon />Pedir por WhatsApp</a>
+              </div>
+            </li>
+          ))}
+        </ul>
+        <p class="note">Precios en pesos colombianos (COP), impuestos incluidos.</p>
+      </div>
+    </section>
+
+    <section id="historia" class="story">
+      <div class="wrap story-in">
+        <div>
+          <p class="eyebrow">Nuestra historia</p>
+          <h2>{story.title}</h2>
+          {story.paragraphs.map((p) => <p class="lead">{p}</p>)}
+        </div>
+        <dl class="facts">
+          {story.facts.map((f) => <div><dt>{f.value}</dt><dd>{f.label}</dd></div>)}
+        </dl>
+      </div>
+    </section>
+
+    <section id="galeria" class="gallery">
+      <div class="wrap">
+        <p class="eyebrow">Galería</p>
+        <h2>Así se ve (y así sabe)</h2>
+        <ul class="tiles">
+          {brand.gallery.map((g, i) => (
+            <li class={`tile tile-${i % 3}`}><Dish art={g.art} label={g.caption} /><span>{g.caption}</span></li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    <section id="visitanos" class="visit">
+      <div class="wrap visit-in">
+        <div class="visit-info">
+          <p class="eyebrow">Visítanos</p>
+          <h2>Cómo llegar y cuándo abrimos</h2>
+          <address>
+            <strong>{contact.address}</strong><br />{contact.neighborhood}
+          </address>
+          <ul class="hours">{hours.map((h) => <li><span>{h.days}</span><span>{h.time}</span></li>)}</ul>
+          <p class="contact-line">
+            <a href={`tel:${contact.phone.replace(/[^+\d]/g, '')}`}>{contact.phone}</a> ·
+            <a href={`mailto:${contact.email}`}>{contact.email}</a>
+          </p>
+          <a class="btn btn-primary" href={contact.mapsUrl} target="_blank" rel="noopener noreferrer">Abrir en Google Maps</a>
+        </div>
+        <div class="map">
+          <iframe title={`Mapa de ${brand.name}`} src={mapEmbed} loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        </div>
+      </div>
+    </section>
+
+    <section class="final">
+      <div class="wrap final-in">
+        <h2>{brand.finalCta.title}</h2>
+        <p class="lead">{brand.finalCta.text}</p>
+        <a class="btn btn-wa" href={waLink(brand.whatsapp.greeting)} target="_blank" rel="noopener noreferrer"><WaIcon />Escribir por WhatsApp</a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="foot">
+    <div class="wrap foot-in">
+      <Logo />
+      <ul class="social">{brand.social.map((s) => <li><a href={s.url} target="_blank" rel="noopener noreferrer">{s.label} <span>{s.handle}</span></a></li>)}</ul>
+      {brand.demoNotice && <p class="demo">{brand.demoNotice}</p>}
+    </div>
+  </footer>
+
+  <div class="dock" role="region" aria-label="Acciones rápidas">
+    <a class="btn btn-primary" href="#menu">Ver menú</a>
+    <a class="btn btn-wa" href={waLink(brand.whatsapp.greeting)} target="_blank" rel="noopener noreferrer"><WaIcon />WhatsApp</a>
+  </div>
+
+  <script>
+    const buttons = document.querySelectorAll<HTMLButtonElement>('.filter');
+    const items = document.querySelectorAll<HTMLElement>('.item');
+    buttons.forEach((b) =>
+      b.addEventListener('click', () => {
+        const f = b.dataset.filter;
+        buttons.forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
+        items.forEach((i) => { i.hidden = !(f === 'all' || i.dataset.category === f); });
+      })
+    );
+  </script>
+</Base>
