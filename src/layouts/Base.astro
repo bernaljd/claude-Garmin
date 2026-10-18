@@ -1,0 +1,31 @@
+---
+import { brand } from '../config/brand';
+import '../styles/global.css';
+const t = brand.theme;
+const vars = `--bg:${t.bg};--surface:${t.surface};--ink:${t.ink};--muted:${t.muted};--accent:${t.accent};--accent-ink:${t.accentInk};--deep:${t.deep};--deep-ink:${t.deepInk};--font-display:${t.fontDisplay};--font-body:${t.fontBody};--display-style:${t.displayStyle ?? 'normal'};--display-case:${t.displayCase ?? 'none'};`;
+const favicon = `data:image/svg+xml,${encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="14" fill="${t.accent}"/><text x="32" y="41" font-size="${brand.logoMark.length > 1 ? 22 : 32}" font-family="Georgia,serif" font-weight="700" text-anchor="middle" fill="${t.accentInk}">${brand.logoMark}</text></svg>`)}`;
+---
+<!doctype html>
+<html lang="es-CO" style={vars}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{brand.seo.title}</title>
+    <meta name="description" content={brand.seo.description} />
+    <meta name="theme-color" content={t.deep} />
+    <meta property="og:title" content={brand.seo.title} />
+    <meta property="og:description" content={brand.seo.description} />
+    <meta property="og:type" content="restaurant" />
+    <meta property="og:locale" content="es_CO" />
+    <link rel="icon" href={favicon} />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href={t.fontsHref} />
+    <script type="application/ld+json" set:html={JSON.stringify({
+      '@context': 'https://schema.org', '@type': 'Restaurant', name: brand.name,
+      telephone: brand.contact.phone, servesCuisine: brand.tagline,
+      address: { '@type': 'PostalAddress', streetAddress: brand.contact.address, addressLocality: 'Cali', addressCountry: 'CO' },
+    })} />
+  </head>
+  <body><slot /></body>
+</html>

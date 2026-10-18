@@ -1,0 +1,95 @@
+---
+import type { DishArt } from '../config/types';
+interface Props { art: DishArt; label?: string; image?: string; class?: string }
+const { art, label = '', image, class: cls = '' } = Astro.props;
+---
+{image ? (
+  <img src={image} alt={label} loading="lazy" decoding="async" class={`dish ${cls}`} />
+) : (
+<svg class={`dish ${cls}`} viewBox="0 0 200 200" role="img" aria-label={label} focusable="false">
+  <ellipse cx="100" cy="176" rx="64" ry="9" fill="#000" opacity=".16" />
+  {art === 'burger' && (<g>
+    <path d="M36 112c0-38 28-62 64-62s64 24 64 62z" fill="#d98a3a" />
+    <path d="M60 78c5-3 10-3 14 0M96 66c5-3 10-3 14 0M124 84c5-3 10-3 14 0" stroke="#f6d9a3" stroke-width="5" stroke-linecap="round" fill="none" />
+    <path d="M30 118c12 8 22-6 34 0s22-6 36 0 24-6 36 0 22-6 34 0v6H30z" fill="#6bb04a" />
+    <path d="M34 124h132l-14 14h-32l-12 12-12-12H48z" fill="#f2b632" />
+    <rect x="34" y="136" width="132" height="16" rx="8" fill="#5a2b1a" />
+    <path d="M36 152c0 14 14 20 64 20s64-6 64-20z" fill="#c97a2e" />
+  </g>)}
+  {art === 'sandwich' && (<g>
+    <path d="M40 104c0-34 26-54 60-54s60 20 60 54z" fill="#e0a252" />
+    <path d="M70 76h6M104 66h6M128 84h6" stroke="#f6d9a3" stroke-width="5" stroke-linecap="round" />
+    <path d="M32 110c14 10 24-6 38 0s26-6 40 0 26-6 40 0 12 0 16 0v8H32z" fill="#8cc152" />
+    <rect x="34" y="118" width="132" height="10" fill="#e8553a" rx="5" />
+    <path d="M30 128c10 12 24-4 36 4s24-8 36 0 24-8 36 0 22-6 32 0v14H30z" fill="#d9822b" />
+    <path d="M40 148c0 16 14 22 60 22s60-6 60-22z" fill="#c98a42" />
+  </g>)}
+  {art === 'fries' && (<g>
+    {[58,72,86,100,114,128].map((x, i) => (
+      <rect x={x} y={44 + (i % 3) * 8} width="12" height={80 - (i % 3) * 8} rx="3" fill="#f2c14e" transform={`rotate(${(i - 2.5) * 5} ${x + 6} 124)`} />
+    ))}
+    <path d="M48 112h104l-12 62H60z" fill="#d94a2b" />
+    <path d="M62 126h76l-3 20H65z" fill="#fff4e0" opacity=".9" />
+  </g>)}
+  {art === 'wings' && (<g>
+    <ellipse cx="100" cy="120" rx="76" ry="38" fill="#fff4e0" />
+    <path d="M52 112c0-18 18-26 34-20 10 4 8 22-4 28s-30 2-30-8z" fill="#b8481a" />
+    <path d="M96 100c4-16 24-18 36-8 10 10 0 26-14 28s-24-8-22-20z" fill="#c4521f" />
+    <path d="M70 134c0-12 14-18 28-14s12 18 0 22-28 0-28-8z" fill="#a83e14" />
+    <path d="M126 128c2-10 16-12 24-4s-2 18-12 18-14-6-12-14z" fill="#b8481a" />
+    <path d="M66 100l8 6M110 98l10 4M84 132l10 2" stroke="#f2b632" stroke-width="3" stroke-linecap="round" />
+  </g>)}
+  {art === 'bowl' && (<g>
+    <path d="M26 100h148c0 40-30 68-74 68s-74-28-74-68z" fill="#f4ede0" />
+    <ellipse cx="100" cy="100" rx="74" ry="14" fill="#fff9ec" />
+    <circle cx="70" cy="96" r="12" fill="#f08a6a" /><circle cx="94" cy="90" r="12" fill="#f4a07e" />
+    <circle cx="120" cy="96" r="12" fill="#f08a6a" /><circle cx="140" cy="90" r="8" fill="#f4a07e" />
+    <path d="M60 86c4-8 12-10 16-4M104 80c6-8 14-8 18-2M126 84c2-6 8-8 12-4" stroke="#5aa04a" stroke-width="5" stroke-linecap="round" fill="none" />
+    <circle cx="82" cy="82" r="6" fill="#7a3b86" /><circle cx="112" cy="104" r="5" fill="#7a3b86" />
+    <path d="M62 142h76" stroke="#d9c9a8" stroke-width="3" opacity=".8" />
+  </g>)}
+  {art === 'fish' && (<g>
+    <ellipse cx="100" cy="114" rx="84" ry="46" fill="#fff9ec" />
+    <path d="M38 112c20-26 56-34 90-20 12 5 22 12 32 22-10 10-20 17-32 22-34 14-70 6-90-20z" fill="#d8923c" />
+    <path d="M160 114l28-22v44z" fill="#c07a28" />
+    <path d="M70 94c8 10 8 30 0 40M92 90c8 12 8 36 0 48M114 94c8 10 8 30 0 40" stroke="#b36a1c" stroke-width="3" fill="none" />
+    <circle cx="54" cy="108" r="5" fill="#2b1a0e" />
+    <circle cx="150" cy="150" r="14" fill="#f2c14e" /><circle cx="46" cy="148" r="12" fill="#f2c14e" />
+  </g>)}
+  {art === 'drink' && (<g>
+    <path d="M62 52h76l-10 118H72z" fill="#e8f4d4" opacity=".95" />
+    <path d="M66 84h68l-6 86H72z" fill="#d8e86a" />
+    <rect x="70" y="64" width="22" height="22" rx="4" fill="#fff" opacity=".45" transform="rotate(-10 80 75)" />
+    <rect x="106" y="94" width="22" height="22" rx="4" fill="#fff" opacity=".4" transform="rotate(14 117 105)" />
+    <path d="M110 24l8 70" stroke="#d9441e" stroke-width="7" stroke-linecap="round" />
+    <circle cx="140" cy="60" r="20" fill="#9ccc3c" /><circle cx="140" cy="60" r="14" fill="#c8e86a" />
+    <path d="M62 52h76" stroke="#fff" stroke-width="4" opacity=".7" />
+  </g>)}
+  {art === 'dessert' && (<g>
+    <ellipse cx="100" cy="154" rx="80" ry="14" fill="#fff4e0" />
+    <path d="M44 150V96l56-24 56 24v54z" fill="#5a2b1a" />
+    <path d="M44 96l56-24 56 24-56 20z" fill="#7a3d24" />
+    <path d="M56 98c10 14 14-4 22 8s16-8 24 6 16-10 24 2 8-6 14-4v-16l-56 20-48-22z" fill="#d9822b" opacity=".0" />
+    <path d="M50 100c8 20 12 0 20 14s14-6 22 8 14-8 22 6 14-6 22 8 12-8 16-6l-0-20-56 22z" fill="#e8a63a" />
+    <circle cx="100" cy="64" r="14" fill="#fff9ec" /><circle cx="100" cy="64" r="9" fill="#f6e2b0" />
+  </g>)}
+  {art === 'empanada' && (<g>
+    <ellipse cx="100" cy="152" rx="80" ry="16" fill="#fff4e0" />
+    <path d="M30 144c0-44 30-76 70-76s70 32 70 76z" fill="#e0a23a" />
+    <path d="M38 138c0-36 26-62 62-62" stroke="#f6cf6a" stroke-width="5" fill="none" stroke-linecap="round" />
+    {[36,48,60,72,84,96,108,120,132,144,156].map((x) => (<circle cx={x + 4} cy={140 - Math.sin((x - 30) / 128 * Math.PI) * 70} r="3" fill="#b8791c" />))}
+    <circle cx="170" cy="150" r="14" fill="#6bb04a" /><circle cx="174" cy="146" r="6" fill="#9cd06a" />
+  </g>)}
+  {art === 'skewer' && (<g>
+    <path d="M20 156L180 56" stroke="#c9a56a" stroke-width="5" stroke-linecap="round" />
+    <g transform="rotate(-32 100 106)">
+      <rect x="40" y="88" width="34" height="34" rx="9" fill="#7a2f1a" />
+      <rect x="76" y="90" width="26" height="30" rx="8" fill="#d9441e" />
+      <rect x="104" y="88" width="34" height="34" rx="9" fill="#7a2f1a" />
+      <rect x="140" y="90" width="24" height="30" rx="8" fill="#f2b632" />
+      <rect x="164" y="88" width="30" height="34" rx="9" fill="#7a2f1a" />
+    </g>
+    <circle cx="60" cy="158" r="12" fill="#6bb04a" />
+  </g>)}
+</svg>
+)}
